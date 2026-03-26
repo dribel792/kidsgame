@@ -8,9 +8,9 @@ import * as Speech from 'expo-speech';
 const { width } = Dimensions.get('window');
 
 const GAMES = [
-  { name: 'Letters', emoji: '🔤', color: '#FF6B9D', desc: 'Learn the alphabet!', screen: 'Letters' },
-  { name: 'Memory',  emoji: '🃏', color: '#845EC2', desc: 'Match the pairs!',    screen: 'Memory'  },
-  { name: 'Counting',emoji: '🔢', color: '#00B4D8', desc: 'Count with me!',      screen: 'Counting'},
+  { name: 'Buchstaben', emoji: '🔤', color: '#FF6B9D', desc: 'Lerne das Alphabet!', screen: 'Letters' },
+  { name: 'Memory',     emoji: '🃏', color: '#845EC2', desc: 'Finde die Paare!',    screen: 'Memory'  },
+  { name: 'Zählen',     emoji: '🔢', color: '#00B4D8', desc: 'Zähl mit mir!',       screen: 'Counting'},
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -23,15 +23,15 @@ export default function HomeScreen({ navigation }) {
         Animated.timing(bounce, { toValue: 1,    duration: 700, useNativeDriver: true }),
       ])
     ).start();
-    setTimeout(() => Speech.speak("Let's play and learn!", { rate: 0.85, pitch: 1.2 }), 400);
+    setTimeout(() => Speech.speak('Lass uns spielen und lernen!', { rate: 0.85, pitch: 1.2, language: 'de-DE' }), 400);
   }, []);
 
   return (
     <SafeAreaView style={styles.safe}>
       <Animated.Text style={[styles.title, { transform: [{ scale: bounce }] }]}>
-        🌟 Learning Time! 🌟
+        🌟 Lernzeit! 🌟
       </Animated.Text>
-      <Text style={styles.subtitle}>Pick a game to play</Text>
+      <Text style={styles.subtitle}>Wähle ein Spiel</Text>
 
       <View style={styles.grid}>
         {GAMES.map((g) => (
@@ -40,7 +40,7 @@ export default function HomeScreen({ navigation }) {
             style={[styles.card, { backgroundColor: g.color }]}
             activeOpacity={0.75}
             onPress={() => {
-              Speech.speak(g.desc, { rate: 0.85, pitch: 1.2 });
+              Speech.speak(g.desc, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
               setTimeout(() => navigation.navigate(g.screen), 600);
             }}
           >

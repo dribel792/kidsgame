@@ -9,22 +9,24 @@ const { width } = Dimensions.get('window');
 const IS_TABLET = width > 700;
 
 const ITEMS = [
-  { emoji: '🍎', name: 'apples'   },
-  { emoji: '⭐', name: 'stars'    },
-  { emoji: '🐶', name: 'dogs'     },
-  { emoji: '🌸', name: 'flowers'  },
-  { emoji: '🦋', name: 'butterflies' },
-  { emoji: '🍪', name: 'cookies'  },
-  { emoji: '🐟', name: 'fish'     },
-  { emoji: '🎈', name: 'balloons' },
+  { emoji: '🍎', name: 'Äpfel'          },
+  { emoji: '⭐', name: 'Sterne'         },
+  { emoji: '🐶', name: 'Hunde'          },
+  { emoji: '🌸', name: 'Blumen'         },
+  { emoji: '🦋', name: 'Schmetterlinge' },
+  { emoji: '🍪', name: 'Kekse'          },
+  { emoji: '🐟', name: 'Fische'         },
+  { emoji: '🎈', name: 'Luftballons'    },
 ];
 
+// German numbers 1–5
+const GERMAN_NUMBERS = ['eins', 'zwei', 'drei', 'vier', 'fünf'];
+
 function buildQuestion() {
-  const count  = Math.floor(Math.random() * 5) + 1; // 1–5
+  const count  = Math.floor(Math.random() * 5) + 1;
   const item   = ITEMS[Math.floor(Math.random() * ITEMS.length)];
-  // Build 3 choices: correct + 2 different numbers
   const pool   = [1,2,3,4,5].filter(n => n !== count);
-  const wrongs = pool.sort(() => Math.random() - 0.5).slice(0,2);
+  const wrongs = pool.sort(() => Math.random() - 0.5).slice(0, 2);
   const choices = [count, ...wrongs].sort(() => Math.random() - 0.5);
   return { count, item, choices };
 }
@@ -32,15 +34,15 @@ function buildQuestion() {
 const TOTAL_ROUNDS = 8;
 
 export default function CountingScreen({ navigation }) {
-  const [q, setQ]             = useState(buildQuestion);
-  const [round, setRound]     = useState(0);
-  const [score, setScore]     = useState(0);
-  const [status, setStatus]   = useState('playing'); // playing | correct | wrong | done
-  const [picked, setPicked]   = useState(null);
-  const scaleAnims            = useRef(
+  const [q, setQ]           = useState(buildQuestion);
+  const [round, setRound]   = useState(0);
+  const [score, setScore]   = useState(0);
+  const [status, setStatus] = useState('playing');
+  const [picked, setPicked] = useState(null);
+  const scaleAnims          = useRef(
     Array.from({ length: 5 }, () => new Animated.Value(0))
   ).current;
-  const shakeAnim             = useRef(new Animated.Value(0)).current;
+  const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => { loadQuestion(); }, []);
 
@@ -50,23 +52,20 @@ export default function CountingScreen({ navigation }) {
     setStatus('playing');
     setPicked(null);
 
-    // Animate items dropping in one by one
     scaleAnims.forEach(a => a.setValue(0));
     newQ.count && scaleAnims.slice(0, newQ.count).forEach((a, i) => {
-      Animated.spring(a, {
-        toValue: 1, delay: i * 120, useNativeDriver: true,
-      }).start();
+      Animated.spring(a, { toValue: 1, delay: i * 120, useNativeDriver: true }).start();
     });
 
     setTimeout(() => {
-      const singular = newQ.count === 1
-        ? `1 ${newQ.item.name.replace(/s$/, '')}`
-        : `${newQ.count} ${newQ.item.name}`;
-      Speech.speak(`How many ${newQ.item.name}? Count with me!`, { rate: 0.82, pitch: 1.25 });
+      Speech.speak(
+        `Wie viele ${newQ.item.name}? Zähl mit mir!`,
+        { rate: 0.82, pitch: 1.25, language: 'de-DE' }
+      );
       let i = 1;
       const interval = setInterval(() => {
         if (i > newQ.count) { clearInterval(interval); return; }
-        Speech.speak(String(i), { rate: 0.9, pitch: 1.2 });
+        Speech.speak(GERMAN_NUMBERS[i - 1], { rate: 0.9, pitch: 1.2, language: 'de-DE' });
         i++;
       }, 900);
     }, 400);
@@ -78,7 +77,10 @@ export default function CountingScreen({ navigation }) {
     if (num === q.count) {
       setStatus('correct');
       setScore(s => s + 1);
-      Speech.speak(`Yes! ${num}! Wonderful!`, { rate: 0.85, pitch: 1.3 });
+      Speech.speak(
+        `Ja! ${GERMAN_NUMBERS[num - 1]}! Wunderbar!`,
+        { rate: 0.85, pitch: 1.3, language: 'de-DE' }
+      );
       setTimeout(() => {
         if (round + 1 >= TOTAL_ROUNDS) setStatus('done');
         else { setRound(r => r + 1); loadQuestion(); }
@@ -92,7 +94,7 @@ export default function CountingScreen({ navigation }) {
         Animated.timing(shakeAnim, { toValue: -10, duration: 55, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: 0,   duration: 55, useNativeDriver: true }),
       ]).start();
-      Speech.speak('Not quite — try again!', { rate: 0.85, pitch: 1.1 });
+      Speech.speak('Nicht ganz — versuch es nochmal!', { rate: 0.85, pitch: 1.1, language: 'de-DE' });
       setTimeout(() => { setStatus('playing'); setPicked(null); }, 1200);
     }
   }
@@ -100,14 +102,16 @@ export default function CountingScreen({ navigation }) {
   if (status === 'done') {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.celebTitle}>🎉 You did it! 🎉</Text>
-        <Text style={styles.celebSub}>Score: {score} out of {TOTAL_ROUNDS}!</Text>
+        <Text style={styles.celebTitle}>🎉 Geschafft! 🎉</Text>
+        <Text style={styles.celebSub}>{score} von {TOTAL_ROUNDS} richtig!</Text>
         <TouchableOpacity style={styles.bigBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.bigBtnText}>🏠 Home</Text>
+          <Text style={styles.bigBtnText}>🏠 Startseite</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.bigBtn, { backgroundColor: '#FF6B9D', marginTop: 14 }]}
-          onPress={() => { setRound(0); setScore(0); loadQuestion(); setStatus('playing'); }}>
-          <Text style={styles.bigBtnText}>🔄 Play Again</Text>
+        <TouchableOpacity
+          style={[styles.bigBtn, { backgroundColor: '#FF6B9D', marginTop: 14 }]}
+          onPress={() => { setRound(0); setScore(0); loadQuestion(); setStatus('playing'); }}
+        >
+          <Text style={styles.bigBtnText}>🔄 Nochmal spielen</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -116,22 +120,21 @@ export default function CountingScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.safe}>
       <TouchableOpacity style={styles.topBack} onPress={() => navigation.goBack()}>
-        <Text style={styles.topBackText}>← Back</Text>
+        <Text style={styles.topBackText}>← Zurück</Text>
       </TouchableOpacity>
 
       <View style={styles.header}>
-        <Text style={styles.title}>🔢 Counting</Text>
-        <Text style={styles.scoreText}>⭐ {score}  |  Round {round + 1}/{TOTAL_ROUNDS}</Text>
+        <Text style={styles.title}>🔢 Zählen</Text>
+        <Text style={styles.scoreText}>⭐ {score}  |  Runde {round + 1}/{TOTAL_ROUNDS}</Text>
       </View>
 
-      {/* Question */}
       <TouchableOpacity onPress={() =>
-        Speech.speak(`How many ${q.item.name}?`, { rate: 0.82, pitch: 1.25 })}>
-        <Text style={styles.questionText}>How many {q.item.name}?</Text>
-        <Text style={styles.tapHint}>🔊 tap to hear again</Text>
+        Speech.speak(`Wie viele ${q.item.name}?`, { rate: 0.82, pitch: 1.25, language: 'de-DE' })
+      }>
+        <Text style={styles.questionText}>Wie viele {q.item.name}?</Text>
+        <Text style={styles.tapHint}>🔊 nochmal hören</Text>
       </TouchableOpacity>
 
-      {/* Items display */}
       <Animated.View style={[styles.itemsBox, { transform: [{ translateX: shakeAnim }] }]}>
         <View style={styles.itemsRow}>
           {Array.from({ length: q.count }).map((_, i) => (
@@ -145,7 +148,6 @@ export default function CountingScreen({ navigation }) {
         </View>
       </Animated.View>
 
-      {/* Number choices */}
       <View style={styles.choicesRow}>
         {q.choices.map((num) => {
           const isCorrectPicked = picked === num && status === 'correct';

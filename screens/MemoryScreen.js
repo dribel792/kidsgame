@@ -9,11 +9,11 @@ const { width } = Dimensions.get('window');
 const IS_TABLET = width > 700;
 
 const PAIRS = [
-  { id: 'dog',      emoji: '🐶', label: 'Dog'      },
-  { id: 'cat',      emoji: '🐱', label: 'Cat'      },
-  { id: 'fish',     emoji: '🐟', label: 'Fish'     },
-  { id: 'rabbit',   emoji: '🐰', label: 'Rabbit'   },
-  { id: 'elephant', emoji: '🐘', label: 'Elephant' },
+  { id: 'hund',     emoji: '🐶', label: 'Hund'     },
+  { id: 'katze',    emoji: '🐱', label: 'Katze'    },
+  { id: 'fisch',    emoji: '🐟', label: 'Fisch'    },
+  { id: 'hase',     emoji: '🐰', label: 'Hase'     },
+  { id: 'elefant',  emoji: '🐘', label: 'Elefant'  },
   { id: 'giraffe',  emoji: '🦒', label: 'Giraffe'  },
 ];
 
@@ -25,7 +25,7 @@ function buildDeck() {
 const CARD_SIZE = IS_TABLET ? 130 : Math.min((width - 80) / 4, 88);
 
 function Card({ item, isFlipped, isMatched, onPress }) {
-  const flipAnim = useRef(new Animated.Value(isFlipped ? 1 : 0)).current;
+  const flipAnim  = useRef(new Animated.Value(isFlipped ? 1 : 0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -45,22 +45,20 @@ function Card({ item, isFlipped, isMatched, onPress }) {
     }
   }, [isMatched]);
 
-  const frontRotate = flipAnim.interpolate({ inputRange: [0,1], outputRange: ['180deg','360deg'] });
-  const backRotate  = flipAnim.interpolate({ inputRange: [0,1], outputRange: ['0deg','180deg']   });
+  const frontRotate  = flipAnim.interpolate({ inputRange: [0,1], outputRange: ['180deg','360deg'] });
+  const backRotate   = flipAnim.interpolate({ inputRange: [0,1], outputRange: ['0deg','180deg']   });
   const frontOpacity = flipAnim.interpolate({ inputRange: [0.5,1], outputRange: [0,1] });
   const backOpacity  = flipAnim.interpolate({ inputRange: [0,0.5], outputRange: [1,0] });
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <Animated.View style={[styles.cardWrap, { transform: [{ scale: scaleAnim }] }]}>
-        {/* Back face */}
         <Animated.View style={[
           styles.cardFace, styles.cardBack,
           { opacity: backOpacity, transform: [{ rotateY: backRotate }] },
         ]}>
           <Text style={styles.cardBackText}>?</Text>
         </Animated.View>
-        {/* Front face */}
         <Animated.View style={[
           styles.cardFace, styles.cardFront,
           isMatched && styles.cardMatched,
@@ -75,21 +73,24 @@ function Card({ item, isFlipped, isMatched, onPress }) {
 }
 
 export default function MemoryScreen({ navigation }) {
-  const [deck, setDeck]             = useState(buildDeck);
-  const [flipped, setFlipped]       = useState([]);   // uids currently face-up
-  const [matched, setMatched]       = useState([]);   // ids of matched pairs
-  const [locked, setLocked]         = useState(false);
-  const [moves, setMoves]           = useState(0);
-  const [done, setDone]             = useState(false);
+  const [deck, setDeck]       = useState(buildDeck);
+  const [flipped, setFlipped] = useState([]);
+  const [matched, setMatched] = useState([]);
+  const [locked, setLocked]   = useState(false);
+  const [moves, setMoves]     = useState(0);
+  const [done, setDone]       = useState(false);
 
   useEffect(() => {
-    setTimeout(() => Speech.speak("Match the pairs! Tap a card to flip it!", { rate: 0.85, pitch: 1.2 }), 400);
+    setTimeout(() => Speech.speak(
+      'Finde die Paare! Tippe auf eine Karte!',
+      { rate: 0.85, pitch: 1.2, language: 'de-DE' }
+    ), 400);
   }, []);
 
   useEffect(() => {
     if (matched.length === PAIRS.length) {
       setDone(true);
-      Speech.speak('You matched them all! Amazing job!', { rate: 0.85, pitch: 1.3 });
+      Speech.speak('Du hast alle Paare gefunden! Fantastisch!', { rate: 0.85, pitch: 1.3, language: 'de-DE' });
     }
   }, [matched]);
 
@@ -102,24 +103,22 @@ export default function MemoryScreen({ navigation }) {
 
     if (flipped.length === 0) {
       setFlipped([uid]);
-      Speech.speak(card.label, { rate: 0.85, pitch: 1.2 });
+      Speech.speak(card.label, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
     } else if (flipped.length === 1) {
       const firstCard = deck.find(c => c.uid === flipped[0]);
       setFlipped([flipped[0], uid]);
       setMoves(m => m + 1);
       setLocked(true);
-      Speech.speak(card.label, { rate: 0.85, pitch: 1.2 });
+      Speech.speak(card.label, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
 
       if (firstCard.id === card.id) {
-        // Match!
         setTimeout(() => {
           setMatched(m => [...m, card.id]);
           setFlipped([]);
           setLocked(false);
-          Speech.speak('Match! Great job!', { rate: 0.85, pitch: 1.3 });
+          Speech.speak('Paar gefunden! Super gemacht!', { rate: 0.85, pitch: 1.3, language: 'de-DE' });
         }, 700);
       } else {
-        // No match — flip back
         setTimeout(() => {
           setFlipped([]);
           setLocked(false);
@@ -140,13 +139,13 @@ export default function MemoryScreen({ navigation }) {
   if (done) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.celebTitle}>🎉 All Done! 🎉</Text>
-        <Text style={styles.celebSub}>You matched everything in {moves} moves!</Text>
+        <Text style={styles.celebTitle}>🎉 Geschafft! 🎉</Text>
+        <Text style={styles.celebSub}>Du hast alles in {moves} Zügen gefunden!</Text>
         <TouchableOpacity style={styles.bigBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.bigBtnText}>🏠 Home</Text>
+          <Text style={styles.bigBtnText}>🏠 Startseite</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.bigBtn, { backgroundColor: '#845EC2', marginTop: 14 }]} onPress={restart}>
-          <Text style={styles.bigBtnText}>🔄 Play Again</Text>
+          <Text style={styles.bigBtnText}>🔄 Nochmal spielen</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -155,12 +154,12 @@ export default function MemoryScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.safe}>
       <TouchableOpacity style={styles.topBack} onPress={() => navigation.goBack()}>
-        <Text style={styles.topBackText}>← Back</Text>
+        <Text style={styles.topBackText}>← Zurück</Text>
       </TouchableOpacity>
 
       <View style={styles.header}>
-        <Text style={styles.title}>🃏 Memory Match</Text>
-        <Text style={styles.moves}>Moves: {moves} | Pairs: {matched.length}/{PAIRS.length}</Text>
+        <Text style={styles.title}>🃏 Memory</Text>
+        <Text style={styles.moves}>Züge: {moves} | Paare: {matched.length}/{PAIRS.length}</Text>
       </View>
 
       <View style={styles.grid}>
@@ -185,11 +184,7 @@ const styles = StyleSheet.create({
   header:      { alignItems: 'center', marginBottom: 16 },
   title:       { fontSize: 34, fontWeight: '900', color: '#333' },
   moves:       { fontSize: 18, color: '#777', marginTop: 4 },
-  grid: {
-    flexDirection: 'row', flexWrap: 'wrap',
-    justifyContent: 'center', gap: 12,
-    paddingHorizontal: 16,
-  },
+  grid:        { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 12, paddingHorizontal: 16 },
   cardWrap:    { width: CARD_SIZE, height: CARD_SIZE + 20 },
   cardFace:    { position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   cardBack:    { backgroundColor: '#845EC2' },

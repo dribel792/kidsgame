@@ -8,18 +8,19 @@ import * as Speech from 'expo-speech';
 const { width } = Dimensions.get('window');
 const IS_TABLET = width > 700;
 
-// Each entry: letter, correct item, two distractors (different first letters)
+// German letter-word pairs — chosen for clarity at age 4
+// C/Q/X/Y/Z avoided (uncommon in German children's vocab)
 const QUESTIONS = [
-  { letter: 'A', correct: { emoji: '🍎', word: 'Apple'    }, wrongs: [{ emoji: '🐱', word: 'Cat'      }, { emoji: '🌙', word: 'Moon'      }] },
-  { letter: 'B', correct: { emoji: '🍌', word: 'Banana'   }, wrongs: [{ emoji: '🐶', word: 'Dog'      }, { emoji: '🍎', word: 'Apple'     }] },
-  { letter: 'C', correct: { emoji: '🐱', word: 'Cat'      }, wrongs: [{ emoji: '🍌', word: 'Banana'   }, { emoji: '🌟', word: 'Star'      }] },
-  { letter: 'D', correct: { emoji: '🐶', word: 'Dog'      }, wrongs: [{ emoji: '🍎', word: 'Apple'    }, { emoji: '🐱', word: 'Cat'       }] },
-  { letter: 'E', correct: { emoji: '🐘', word: 'Elephant' }, wrongs: [{ emoji: '🐟', word: 'Fish'     }, { emoji: '🍌', word: 'Banana'    }] },
-  { letter: 'F', correct: { emoji: '🐟', word: 'Fish'     }, wrongs: [{ emoji: '🐶', word: 'Dog'      }, { emoji: '🌙', word: 'Moon'      }] },
-  { letter: 'G', correct: { emoji: '🦒', word: 'Giraffe'  }, wrongs: [{ emoji: '🐱', word: 'Cat'      }, { emoji: '🍎', word: 'Apple'     }] },
-  { letter: 'H', correct: { emoji: '🐴', word: 'Horse'    }, wrongs: [{ emoji: '🦁', word: 'Lion'     }, { emoji: '🐘', word: 'Elephant'  }] },
-  { letter: 'I', correct: { emoji: '🍦', word: 'Ice Cream'}, wrongs: [{ emoji: '🍌', word: 'Banana'   }, { emoji: '🐶', word: 'Dog'       }] },
-  { letter: 'J', correct: { emoji: '🃏', word: 'Joker'    }, wrongs: [{ emoji: '🐟', word: 'Fish'     }, { emoji: '🍎', word: 'Apple'     }] },
+  { letter: 'A', correct: { emoji: '🍎', word: 'Apfel'     }, wrongs: [{ emoji: '🐱', word: 'Katze'    }, { emoji: '🌙', word: 'Mond'      }] },
+  { letter: 'B', correct: { emoji: '🐻', word: 'Bär'       }, wrongs: [{ emoji: '🐶', word: 'Hund'     }, { emoji: '🍎', word: 'Apfel'     }] },
+  { letter: 'D', correct: { emoji: '🦕', word: 'Dino'      }, wrongs: [{ emoji: '🐻', word: 'Bär'      }, { emoji: '⭐', word: 'Stern'     }] },
+  { letter: 'E', correct: { emoji: '🐘', word: 'Elefant'   }, wrongs: [{ emoji: '🐟', word: 'Fisch'    }, { emoji: '🍌', word: 'Banane'    }] },
+  { letter: 'F', correct: { emoji: '🐟', word: 'Fisch'     }, wrongs: [{ emoji: '🐶', word: 'Hund'     }, { emoji: '🌙', word: 'Mond'      }] },
+  { letter: 'G', correct: { emoji: '🦒', word: 'Giraffe'   }, wrongs: [{ emoji: '🐱', word: 'Katze'    }, { emoji: '🍎', word: 'Apfel'     }] },
+  { letter: 'H', correct: { emoji: '🐶', word: 'Hund'      }, wrongs: [{ emoji: '🦁', word: 'Löwe'     }, { emoji: '🐘', word: 'Elefant'   }] },
+  { letter: 'I', correct: { emoji: '🦔', word: 'Igel'      }, wrongs: [{ emoji: '🍌', word: 'Banane'   }, { emoji: '🐶', word: 'Hund'      }] },
+  { letter: 'K', correct: { emoji: '🐱', word: 'Katze'     }, wrongs: [{ emoji: '🐟', word: 'Fisch'    }, { emoji: '🍎', word: 'Apfel'     }] },
+  { letter: 'L', correct: { emoji: '🦁', word: 'Löwe'      }, wrongs: [{ emoji: '🐻', word: 'Bär'      }, { emoji: '🦒', word: 'Giraffe'   }] },
 ];
 
 function shuffle(arr) {
@@ -27,13 +28,12 @@ function shuffle(arr) {
 }
 
 export default function LettersScreen({ navigation }) {
-  const [qIndex, setQIndex]     = useState(0);
-  const [choices, setChoices]   = useState([]);
-  const [status, setStatus]     = useState('playing'); // playing | correct | wrong | done
-  const [score, setScore]       = useState(0);
-  const scaleAnim  = useRef(new Animated.Value(1)).current;
-  const shakeAnim  = useRef(new Animated.Value(0)).current;
-  const celebAnim  = useRef(new Animated.Value(0)).current;
+  const [qIndex, setQIndex]   = useState(0);
+  const [choices, setChoices] = useState([]);
+  const [status, setStatus]   = useState('playing');
+  const [score, setScore]     = useState(0);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const q = QUESTIONS[qIndex % QUESTIONS.length];
 
@@ -43,9 +43,10 @@ export default function LettersScreen({ navigation }) {
     setStatus('playing');
     Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start();
     setTimeout(() => {
-      Speech.speak(`Find the letter ${q.letter}! ${q.letter} is for ${q.correct.word}`, {
-        rate: 0.82, pitch: 1.25,
-      });
+      Speech.speak(
+        `Finde den Buchstaben ${q.letter}! ${q.letter} wie ${q.correct.word}`,
+        { rate: 0.82, pitch: 1.25, language: 'de-DE' }
+      );
     }, 300);
   }, [qIndex]);
 
@@ -54,12 +55,7 @@ export default function LettersScreen({ navigation }) {
     if (item.word === q.correct.word) {
       setStatus('correct');
       setScore(s => s + 1);
-      Animated.sequence([
-        Animated.spring(celebAnim, { toValue: 1, useNativeDriver: true }),
-        Animated.delay(200),
-        Animated.spring(celebAnim, { toValue: 0, useNativeDriver: true }),
-      ]).start();
-      Speech.speak('Amazing! That\'s right! 🎉', { rate: 0.85, pitch: 1.3 });
+      Speech.speak('Super! Das ist richtig!', { rate: 0.85, pitch: 1.3, language: 'de-DE' });
       setTimeout(() => {
         if (qIndex + 1 >= QUESTIONS.length) setStatus('done');
         else setQIndex(i => i + 1);
@@ -73,7 +69,7 @@ export default function LettersScreen({ navigation }) {
         Animated.timing(shakeAnim, { toValue: -8,  duration: 60, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: 0,   duration: 60, useNativeDriver: true }),
       ]).start();
-      Speech.speak('Try again! You can do it!', { rate: 0.85, pitch: 1.1 });
+      Speech.speak('Versuch es nochmal! Du schaffst das!', { rate: 0.85, pitch: 1.1, language: 'de-DE' });
       setTimeout(() => setStatus('playing'), 1200);
     }
   }
@@ -81,14 +77,16 @@ export default function LettersScreen({ navigation }) {
   if (status === 'done') {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.celebTitle}>🎉 Woohoo! 🎉</Text>
-        <Text style={styles.celebScore}>You got {score} out of {QUESTIONS.length}!</Text>
+        <Text style={styles.celebTitle}>🎉 Toll gemacht! 🎉</Text>
+        <Text style={styles.celebScore}>{score} von {QUESTIONS.length} richtig!</Text>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.backBtnText}>🏠 Home</Text>
+          <Text style={styles.backBtnText}>🏠 Startseite</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.backBtn, { backgroundColor: '#FF6B9D', marginTop: 12 }]}
-          onPress={() => { setQIndex(0); setScore(0); setStatus('playing'); }}>
-          <Text style={styles.backBtnText}>🔄 Play Again</Text>
+        <TouchableOpacity
+          style={[styles.backBtn, { backgroundColor: '#FF6B9D', marginTop: 12 }]}
+          onPress={() => { setQIndex(0); setScore(0); setStatus('playing'); }}
+        >
+          <Text style={styles.backBtnText}>🔄 Nochmal spielen</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -96,31 +94,27 @@ export default function LettersScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Back button */}
       <TouchableOpacity style={styles.topBack} onPress={() => navigation.goBack()}>
-        <Text style={styles.topBackText}>← Back</Text>
+        <Text style={styles.topBackText}>← Zurück</Text>
       </TouchableOpacity>
 
-      {/* Score */}
       <Text style={styles.scoreText}>⭐ {score}</Text>
 
-      {/* Big Letter */}
       <Animated.View style={[styles.letterBox, {
         transform: [{ translateX: shakeAnim }, { scale: scaleAnim }],
         backgroundColor: status === 'correct' ? '#B5EAD7' : status === 'wrong' ? '#FFD5D5' : '#FFF9C4',
       }]}>
         <Text style={styles.bigLetter}>{q.letter}</Text>
-        <Text style={styles.letterHint}>Find something that starts with {q.letter}!</Text>
+        <Text style={styles.letterHint}>Was beginnt mit {q.letter}?</Text>
       </Animated.View>
 
-      {/* Speaker button */}
-      <TouchableOpacity onPress={() =>
-        Speech.speak(`${q.letter} is for ${q.correct.word}`, { rate: 0.82, pitch: 1.25 })}
-        style={styles.speakBtn}>
-        <Text style={styles.speakBtnText}>🔊 Say it again</Text>
+      <TouchableOpacity
+        onPress={() => Speech.speak(`${q.letter} wie ${q.correct.word}`, { rate: 0.82, pitch: 1.25, language: 'de-DE' })}
+        style={styles.speakBtn}
+      >
+        <Text style={styles.speakBtnText}>🔊 Nochmal hören</Text>
       </TouchableOpacity>
 
-      {/* Choices */}
       <View style={styles.choicesRow}>
         {choices.map((item) => {
           const isCorrect = item.word === q.correct.word && status === 'correct';
@@ -138,7 +132,6 @@ export default function LettersScreen({ navigation }) {
         })}
       </View>
 
-      {/* Progress */}
       <View style={styles.progressRow}>
         {QUESTIONS.map((_, i) => (
           <View key={i} style={[styles.dot, i < qIndex && styles.dotDone, i === qIndex && styles.dotCurrent]} />
