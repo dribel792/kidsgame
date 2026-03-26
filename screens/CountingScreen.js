@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, Animated, Dimensions,
 } from 'react-native';
-import * as Speech from 'expo-speech';
+import { speak } from '../utils/speak';
 
 const { width } = Dimensions.get('window');
 const IS_TABLET = width > 700;
@@ -58,14 +58,14 @@ export default function CountingScreen({ navigation }) {
     });
 
     setTimeout(() => {
-      Speech.speak(
+      speak(
         `Wie viele ${newQ.item.name}? Zähl mit mir!`,
-        { rate: 0.82, pitch: 1.25, language: 'de-DE' }
+        { rate: 0.82, pitch: 1.25 }
       );
       let i = 1;
       const interval = setInterval(() => {
         if (i > newQ.count) { clearInterval(interval); return; }
-        Speech.speak(GERMAN_NUMBERS[i - 1], { rate: 0.9, pitch: 1.2, language: 'de-DE' });
+        speak(GERMAN_NUMBERS[i - 1], { rate: 0.9, pitch: 1.2 });
         i++;
       }, 900);
     }, 400);
@@ -77,9 +77,9 @@ export default function CountingScreen({ navigation }) {
     if (num === q.count) {
       setStatus('correct');
       setScore(s => s + 1);
-      Speech.speak(
+      speak(
         `Ja! ${GERMAN_NUMBERS[num - 1]}! Wunderbar!`,
-        { rate: 0.85, pitch: 1.3, language: 'de-DE' }
+        { rate: 0.85, pitch: 1.3 }
       );
       setTimeout(() => {
         if (round + 1 >= TOTAL_ROUNDS) setStatus('done');
@@ -94,7 +94,7 @@ export default function CountingScreen({ navigation }) {
         Animated.timing(shakeAnim, { toValue: -10, duration: 55, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: 0,   duration: 55, useNativeDriver: true }),
       ]).start();
-      Speech.speak('Nicht ganz — versuch es nochmal!', { rate: 0.85, pitch: 1.1, language: 'de-DE' });
+      speak('Nicht ganz — versuch es nochmal!', { rate: 0.85, pitch: 1.1 });
       setTimeout(() => { setStatus('playing'); setPicked(null); }, 1200);
     }
   }
@@ -129,7 +129,7 @@ export default function CountingScreen({ navigation }) {
       </View>
 
       <TouchableOpacity onPress={() =>
-        Speech.speak(`Wie viele ${q.item.name}?`, { rate: 0.82, pitch: 1.25, language: 'de-DE' })
+        speak(`Wie viele ${q.item.name}?`, { rate: 0.82, pitch: 1.25 })
       }>
         <Text style={styles.questionText}>Wie viele {q.item.name}?</Text>
         <Text style={styles.tapHint}>🔊 nochmal hören</Text>

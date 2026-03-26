@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, Animated, Dimensions,
 } from 'react-native';
-import * as Speech from 'expo-speech';
+import { speak } from '../utils/speak';
 
 const { width } = Dimensions.get('window');
 const IS_TABLET = width > 700;
@@ -81,16 +81,16 @@ export default function MemoryScreen({ navigation }) {
   const [done, setDone]       = useState(false);
 
   useEffect(() => {
-    setTimeout(() => Speech.speak(
+    setTimeout(() => speak(
       'Finde die Paare! Tippe auf eine Karte!',
-      { rate: 0.85, pitch: 1.2, language: 'de-DE' }
+      { rate: 0.85, pitch: 1.2 }
     ), 400);
   }, []);
 
   useEffect(() => {
     if (matched.length === PAIRS.length) {
       setDone(true);
-      Speech.speak('Du hast alle Paare gefunden! Fantastisch!', { rate: 0.85, pitch: 1.3, language: 'de-DE' });
+      speak('Du hast alle Paare gefunden! Fantastisch!', { rate: 0.85, pitch: 1.3 });
     }
   }, [matched]);
 
@@ -103,20 +103,20 @@ export default function MemoryScreen({ navigation }) {
 
     if (flipped.length === 0) {
       setFlipped([uid]);
-      Speech.speak(card.label, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
+      speak(card.label, { rate: 0.85, pitch: 1.2 });
     } else if (flipped.length === 1) {
       const firstCard = deck.find(c => c.uid === flipped[0]);
       setFlipped([flipped[0], uid]);
       setMoves(m => m + 1);
       setLocked(true);
-      Speech.speak(card.label, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
+      speak(card.label, { rate: 0.85, pitch: 1.2 });
 
       if (firstCard.id === card.id) {
         setTimeout(() => {
           setMatched(m => [...m, card.id]);
           setFlipped([]);
           setLocked(false);
-          Speech.speak('Paar gefunden! Super gemacht!', { rate: 0.85, pitch: 1.3, language: 'de-DE' });
+          speak('Paar gefunden! Super gemacht!', { rate: 0.85, pitch: 1.3 });
         }, 700);
       } else {
         setTimeout(() => {

@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, Animated, Dimensions,
 } from 'react-native';
-import * as Speech from 'expo-speech';
+import { speak } from '../utils/speak';
 
 const { width } = Dimensions.get('window');
 
@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
         Animated.timing(bounce, { toValue: 1,    duration: 700, useNativeDriver: true }),
       ])
     ).start();
-    setTimeout(() => Speech.speak('Lass uns spielen und lernen!', { rate: 0.85, pitch: 1.2, language: 'de-DE' }), 400);
+    setTimeout(() => speak('Lass uns spielen und lernen!', { rate: 0.85, pitch: 1.2 }), 400);
   }, []);
 
   return (
@@ -40,7 +40,7 @@ export default function HomeScreen({ navigation }) {
             style={[styles.card, { backgroundColor: g.color }]}
             activeOpacity={0.75}
             onPress={() => {
-              Speech.speak(g.desc, { rate: 0.85, pitch: 1.2, language: 'de-DE' });
+              speak(g.desc, { rate: 0.85, pitch: 1.2 });
               setTimeout(() => navigation.navigate(g.screen), 600);
             }}
           >
