@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen       from './screens/HomeScreen';
+import DifficultyScreen from './screens/DifficultyScreen';
 import LettersScreen    from './screens/LettersScreen';
 import MemoryScreen     from './screens/MemoryScreen';
 import CountingScreen   from './screens/CountingScreen';
@@ -23,6 +24,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: true }}>
         <Stack.Screen name="Home"        component={HomeScreen}      />
+        <Stack.Screen name="Difficulty"  component={DifficultyScreen}/>
         <Stack.Screen name="Letters"     component={LettersScreen}   />
         <Stack.Screen name="Memory"      component={MemoryScreen}    />
         <Stack.Screen name="Counting"    component={CountingScreen}  />

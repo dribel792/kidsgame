@@ -73,8 +73,8 @@ export default function HomeScreen({ navigation }) {
                   style={[st.card, { backgroundColor: g.color, width: CARD_W }]}
                   activeOpacity={0.75}
                   onPress={() => {
-                    speak(g.desc, { rate: 0.82, pitch: 1.15 });
-                    setTimeout(() => navigation.navigate(g.screen), 500);
+                    speak(g.name, { rate: 0.82, pitch: 1.15 });
+                    setTimeout(() => navigation.navigate('Difficulty', { screen: g.screen, gameName: g.name }), 400);
                   }}
                 >
                   <Text style={st.cardEmoji}>{g.emoji}</Text>
