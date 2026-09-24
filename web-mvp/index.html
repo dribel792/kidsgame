@@ -109,6 +109,7 @@
     </div>
     <h1 id="homeHi">Hallo!</h1>
     <p class="subtitle">Was möchtest du spielen?</p>
+    <div id="homeMsg" class="subtitle" style="color:var(--pink);font-weight:800;min-height:24px;margin-top:-6px"></div>
     <div class="grid" id="gameGrid"></div>
     <div style="height:20px"></div>
   </section>
@@ -258,27 +259,48 @@ function finishOnboard(){
 
 // ---------- Home ----------
 const GAMES = [
-  {id:'memory',  name:'Merk die Reihe', emoji:'🧠', color:'var(--purple)', desc:'Reihenfolge merken', stage:'Stufe 1 · Tippen', skill:'memory'},
-  {id:'listen',  name:'Hör genau hin',  emoji:'👂', color:'var(--blue)',   desc:'Hören & finden',     stage:'Stufe 1 · Tippen', skill:'speech'},
-  {id:'repeat',  name:'Sprich nach',    emoji:'🗣️', color:'var(--pink)',   desc:'Nachsprechen',       stage:'Stufe 2 · Sprechen', skill:'speech'},
-  {id:'name',    name:'Was ist das?',   emoji:'💬', color:'var(--orange)', desc:'Laut benennen',      stage:'Stufe 2 · Sprechen', skill:'speech'},
-  {id:'sound',   name:'Welcher Laut?',  emoji:'🔤', color:'var(--green)',  desc:'Laut & Buchstabe',   stage:'Stufe 1 · Tippen', skill:'reading'},
-  {id:'count',   name:'Zähl mit',       emoji:'🔢', color:'var(--blue)',   desc:'Zählen 1–5',         stage:'Stufe 1 · Tippen', skill:'math'},
+  {id:'memory',  name:'Merk die Reihe', emoji:'🧠', color:'var(--purple)', desc:'Reihenfolge merken', stage:'Stufe 1 · Tippen', skill:'memory',  unlock:0},
+  {id:'listen',  name:'Hör genau hin',  emoji:'👂', color:'var(--blue)',   desc:'Hören & finden',     stage:'Stufe 1 · Tippen', skill:'speech',  unlock:0},
+  {id:'repeat',  name:'Sprich nach',    emoji:'🗣️', color:'var(--pink)',   desc:'Nachsprechen',       stage:'Stufe 2 · Sprechen', skill:'speech', unlock:3},
+  {id:'phonics', name:'Anlaut-Detektiv',emoji:'🕵️', color:'var(--green)',  desc:'Wie fängt es an?',   stage:'Stufe 1 · Hören', skill:'reading', unlock:6},
+  {id:'count',   name:'Zähl mit',       emoji:'🔢', color:'var(--blue)',   desc:'Zählen 1–5',         stage:'Stufe 1 · Tippen', skill:'math',   unlock:9},
+  {id:'name',    name:'Was ist das?',   emoji:'💬', color:'var(--orange)', desc:'Laut benennen',      stage:'Stufe 2 · Sprechen', skill:'speech', unlock:12},
 ];
+function unlockedCount(){ const s=state.stars||0; return GAMES.filter(g=>s>=g.unlock).length; }
 function goHome(){
   show('s-home');
   document.getElementById('homeHi').textContent = 'Hallo, '+(state.name||'du')+'!';
   refreshStars();
+  const s=state.stars||0;
+  const nowU=unlockedCount(), prevU=state.lastUnlockedCount||0;
+  const msg=document.getElementById('homeMsg');
+  if(nowU>prevU){
+    const g=GAMES[nowU-1];
+    msg.textContent='🎉 Neu freigespielt: '+g.name+'!';
+    setTimeout(()=>speak('Super! Du hast ein neues Spiel freigespielt: '+g.name+'!'),300);
+  } else {
+    const next=GAMES.find(g=>s<g.unlock);
+    msg.textContent = next ? ('Nächstes Spiel bei ⭐ '+next.unlock+' — noch '+(next.unlock-s)) : 'Alle Spiele frei! ⭐';
+    setTimeout(()=>speak('Hallo '+(state.name||'')+'! Was möchtest du spielen?'),200);
+  }
+  state.lastUnlockedCount=nowU; saveState();
   const grid=document.getElementById('gameGrid'); grid.innerHTML='';
   GAMES.forEach(g=>{
-    const d=document.createElement('div');
-    d.className='card'; d.style.background=g.color;
-    d.innerHTML=`<div class="emoji">${g.emoji}</div><div class="name">${g.name}</div>
-      <div class="desc">${g.desc}</div><div class="stage-tag">${g.stage}</div>`;
-    d.onclick=()=>{ speak(g.name); setTimeout(()=>startGame(g.id),450); };
+    const unlocked = s>=g.unlock;
+    const d=document.createElement('div'); d.className='card';
+    if(unlocked){
+      d.style.background=g.color;
+      d.innerHTML=`<div class="emoji">${g.emoji}</div><div class="name">${g.name}</div>
+        <div class="desc">${g.desc}</div><div class="stage-tag">${g.stage}</div>`;
+      d.onclick=()=>{ speak(g.name); setTimeout(()=>startGame(g.id),450); };
+    } else {
+      d.style.background='#c9ccd1';
+      d.innerHTML=`<div class="emoji">🔒</div><div class="name">${g.name}</div>
+        <div class="desc">Noch ${g.unlock-s} ⭐ sammeln</div><div class="stage-tag">🔑 Freispielen bei ⭐ ${g.unlock}</div>`;
+      d.onclick=()=>{ speak('Sammle noch '+(g.unlock-s)+' Sterne, dann kannst du '+g.name+' spielen.'); };
+    }
     grid.appendChild(d);
   });
-  speak('Hallo '+(state.name||'')+'! Was möchtest du spielen?');
 }
 
 // ---------- Game engine ----------
@@ -293,7 +315,7 @@ function celebrate(cb){
 function startGame(id){
   show('s-game'); refreshStars();
   G={id, round:0, correctInRow:0, total:0, level: (state.levels&&state.levels[id])||1};
-  const map={memory:gMemory, listen:gListen, repeat:gRepeat, name:gName, sound:gSound, count:gCount};
+  const map={memory:gMemory, listen:gListen, repeat:gRepeat, name:gName, phonics:gPhonics, count:gCount};
   map[id]();
 }
 function endRound(id, correct, next){
@@ -436,24 +458,31 @@ function micGame({promptEmoji,promptText,say,target,skill,next}){
   };
 }
 
-/* --- 5) Welcher Laut? (Lesen: Laut↔Buchstabe) --- */
-function gSound(){
-  const n = Math.min(2 + Math.floor((G.level-1)/2), 4);
-  const opts = sample(LAUTE, n);
-  const target = opts[(Math.random()*opts.length)|0];
-  area().innerHTML=`<div class="prompt">🔤 Welcher Buchstabe klingt so?</div>
-    <button class="btn green" onclick="speak('${target.l}. Wie in ${target.ex}.', {rate:0.8})">🔊 Nochmal hören</button>
-    <div class="options" id="sndOpts"></div>`;
-  const box=document.getElementById('sndOpts');
-  opts.forEach(o=>{
-    const d=document.createElement('div'); d.className='opt'; d.style.fontWeight='900'; d.textContent=o.letter;
+/* --- 5) Anlaut-Detektiv (phonologische Bewusstheit: Anlaut/Auslaut) --- */
+function gPhonics(){
+  const useAuslaut = G.level>=3 && Math.random()<0.35;
+  const item = sample([...ANIMALS,...THINGS],1)[0];
+  const correct = (useAuslaut ? item.w.slice(-1) : item.w[0]).toUpperCase();
+  const pool = 'ABDEFGHKLMNOPRSTUWZ'.split('').filter(x=>x!==correct);
+  const nOpt = Math.min(2 + Math.floor((G.level-1)/2), 4);
+  const opts = shuffle([correct, ...sample(pool, nOpt-1)]);
+  const frage = useAuslaut ? `Womit hört „${item.w}" auf?` : `Womit fängt „${item.w}" an?`;
+  area().innerHTML=`<div class="bigemoji">${item.e}</div>
+    <div class="prompt">${frage}</div>
+    <button class="btn green" onclick="speak('${item.w}',{rate:0.65})">🔊 Nochmal hören</button>
+    <div class="options" id="phOpts"></div>`;
+  const box=document.getElementById('phOpts');
+  opts.forEach(L=>{
+    const d=document.createElement('div'); d.className='opt'; d.style.fontWeight='900'; d.textContent=L;
     d.onclick=()=>{
-      if(o.letter===target.letter){ d.classList.add('right'); speak('Richtig! '+target.letter+' wie '+target.ex); endRound('sound',true,gSound); }
-      else { d.classList.add('wrong'); speak('Das ist '+o.letter+'. Wir suchen '+target.letter+'.'); endRound('sound',false,gSound); }
+      if(L===correct){ d.classList.add('right');
+        speak('Richtig! '+item.w+(useAuslaut?' hört mit '+correct+' auf.':' fängt mit '+correct+' an.'));
+        endRound('phonics',true,gPhonics); }
+      else { d.classList.add('wrong'); speak('Hör nochmal genau hin. '+item.w,{rate:0.65}); endRound('phonics',false,gPhonics); }
     };
     box.appendChild(d);
   });
-  setTimeout(()=>speak('Welcher Buchstabe klingt so? '+target.l+'. Wie in '+target.ex+'.',{rate:0.8}),400);
+  setTimeout(()=>speak('Hör genau hin. '+item.w+'. '+frage,{rate:0.72}),400);
 }
 
 /* --- 6) Zähl mit (Rechnen) --- */
