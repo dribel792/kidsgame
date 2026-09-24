@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lernzeit 🌟 — Spielend lernen, gezielt fördern</title>
+<style>
+  :root{
+    --pink:#FF6B9D; --blue:#00B4D8; --purple:#845EC2; --green:#52B788;
+    --orange:#F4A261; --yellow:#FFD166; --ink:#2b2b2b; --bg:#FFFDF3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;}
+
+  /* Hero */
+  header{background:linear-gradient(135deg,#FFF0F6 0%,#F3F0FF 50%,#EAF7FF 100%);padding:64px 0 72px;text-align:center;position:relative;overflow:hidden;}
+  header .floaty{position:absolute;font-size:46px;opacity:.5;animation:float 6s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  .badge{display:inline-block;background:#fff;border-radius:999px;padding:8px 18px;font-weight:700;font-size:14px;color:#777;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px;}
+  h1{font-size:clamp(34px,7vw,60px);font-weight:900;letter-spacing:-1px;}
+  h1 .grad{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .lead{font-size:clamp(17px,3vw,22px);color:#555;max-width:640px;margin:18px auto 0;}
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;background:var(--pink);color:#fff;font-size:clamp(20px,4vw,26px);font-weight:800;padding:20px 44px;border-radius:999px;text-decoration:none;box-shadow:0 8px 24px rgba(255,107,157,.45);transition:transform .12s;}
+  .cta:active{transform:scale(.96);}
+  .cta.sec{background:#fff;color:var(--purple);box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:18px;padding:16px 32px;margin-left:10px;}
+  .ctarow{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+  section{padding:56px 0;}
+  .kicker{text-align:center;color:var(--purple);font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:13px;}
+  h2{text-align:center;font-size:clamp(26px,5vw,40px);font-weight:900;margin:8px 0 10px;}
+  .sub{text-align:center;color:#666;max-width:620px;margin:0 auto 40px;font-size:17px;}
+
+  /* Theme pillars */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;}
+  .pillar{background:#fff;border-radius:24px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,.06);border-top:6px solid;}
+  .pillar .ic{font-size:44px;}
+  .pillar h3{font-size:22px;margin:12px 0 6px;}
+  .pillar p{color:#555;font-size:15px;}
+
+  /* Games */
+  .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;}
+  .game{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.07);transition:transform .12s;}
+  .game:hover{transform:translateY(-4px);}
+  .game .top{padding:26px;text-align:center;color:#fff;}
+  .game .top .ge{font-size:54px;}
+  .game .top .gn{font-size:22px;font-weight:800;margin-top:8px;}
+  .game .body{padding:18px 22px 22px;}
+  .game .tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;border-radius:8px;padding:3px 10px;margin-bottom:10px;}
+  .game .goal{font-size:14px;color:#666;}
+  .game .goal b{color:var(--ink);}
+  .stage{margin-top:12px;font-size:12px;color:#999;font-weight:700;}
+
+  /* How AI */
+  .aibox{background:linear-gradient(135deg,#2b2140,#3d2b5e);color:#fff;border-radius:28px;padding:44px;text-align:center;}
+  .aibox h2{color:#fff;}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-top:28px;}
+  .step{background:rgba(255,255,255,.08);border-radius:18px;padding:22px;}
+  .step .n{font-size:30px;}
+  .step h4{margin:8px 0 4px;font-size:17px;}
+  .step p{font-size:14px;opacity:.85;}
+  .step.soon{opacity:.7;border:1px dashed rgba(255,255,255,.3);}
+
+  /* Trust */
+  .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+  .tcard{background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 14px rgba(0,0,0,.05);}
+  .tcard .ic{font-size:30px;}
+  .tcard h4{margin:8px 0 4px;}
+  .tcard p{color:#666;font-size:14px;}
+
+  footer{background:#2b2b2b;color:#ccc;text-align:center;padding:44px 22px;}
+  footer .cta{margin-top:0;}
+  .fine{color:#888;font-size:13px;margin-top:24px;max-width:640px;margin-left:auto;margin-right:auto;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="floaty" style="left:6%;top:20%">🧠</span>
+  <span class="floaty" style="right:8%;top:16%;animation-delay:1s">🗣️</span>
+  <span class="floaty" style="left:12%;bottom:14%;animation-delay:2s">👂</span>
+  <span class="floaty" style="right:12%;bottom:18%;animation-delay:1.5s">⭐</span>
+  <div class="wrap">
+    <span class="badge">Für Kinder ab 4 · Ergänzung zur Förderung</span>
+    <h1>Spielend lernen.<br><span class="grad">Gezielt fördern.</span></h1>
+    <p class="lead">Eine Lern-App, die <b>zuhört</b>. Sie trainiert Arbeitsgedächtnis und Sprache — und geht durch echtes Sprechen genau dort hin, wo dein Kind Unterstützung braucht.</p>
+    <div class="ctarow">
+      <a class="cta" href="index.html">▶ Spielen</a>
+      <a class="cta sec" href="#spiele">Spiele ansehen</a>
+    </div>
+  </div>
+</header>
+
+<!-- THEME PILLARS -->
+<section>
+  <div class="wrap">
+    <p class="kicker">Worum es geht</p>
+    <h2>Genau auf das Thema zugeschnitten</h2>
+    <p class="sub">Kein generisches „Lernen für alle". Drei Schwerpunkte, die zusammen wirken — mit einer leichten Prise Lesen & Rechnen.</p>
+    <div class="pillars">
+      <div class="pillar" style="border-color:var(--purple)">
+        <div class="ic">🧠</div><h3>Arbeitsgedächtnis</h3>
+        <p>Reihenfolgen merken und wiedergeben — spielerisch, adaptiv länger werdend. Das Fundament fürs Lernen.</p>
+      </div>
+      <div class="pillar" style="border-color:var(--pink)">
+        <div class="ic">🗣️</div><h3>Sprachentwicklung</h3>
+        <p>Nachsprechen und benennen. Das Kind spricht, die App hört zu und bewertet — echtes aktives Sprechen statt nur Tippen.</p>
+      </div>
+      <div class="pillar" style="border-color:var(--blue)">
+        <div class="ic">👂</div><h3>Auditive Verarbeitung</h3>
+        <p>Hören, unterscheiden, zuordnen. Trainiert genau die Verarbeitung von Gehörtem — gezielt und wiederholbar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<section id="spiele" style="background:linear-gradient(#FFF9F0,#FFFDF3)">
+  <div class="wrap">
+    <p class="kicker">Die Spiele</p>
+    <h2>Sechs Spiele, die ins Thema gehen</h2>
+    <p class="sub">Jedes Spiel zielt auf eine konkrete Fähigkeit. Große Tipp-Ziele, Ton bei jeder Aktion, kurze Runden, sanftes Feedback.</p>
+    <div class="games">
+
+      <div class="game">
+        <div class="top" style="background:var(--purple)"><div class="ge">🧠</div><div class="gn">Merk die Reihe</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--purple)">Arbeitsgedächtnis</span>
+          <p class="goal">Tiere leuchten nacheinander auf — das Kind tippt die <b>gleiche Reihenfolge</b> nach. Wird länger, wenn es klappt.</p>
+          <div class="stage">Stufe 1 · Tippen</div>
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="top" style="background:var(--blue)"><div class="ge">👂</div><div class="gn">Hör genau hin</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--blue)">Auditive Verarbeitung</span>
+          <p class="goal">Ein Wort wird gesprochen — das Kind tippt das <b>passende Bild</b>. Trainiert das Verstehen von Gehörtem.</p>
+          <div class="stage">Stufe 1 · Tippen</div>
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="top" style="background:var(--pink)"><div class="ge">🗣️</div><div class="gn">Sprich nach</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--pink)">Sprache · Mikrofon</span>
+          <p class="goal">Die App sagt ein Wort — das Kind <b>spricht es nach</b>. Die Spracherkennung hört zu und bewertet.</p>
+          <div class="stage">Stufe 2 · Sprechen</div>
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="top" style="background:var(--orange)"><div class="ge">💬</div><div class="gn">Was ist das?</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--orange)">Sprache · Mikrofon</span>
+          <p class="goal">Ein Bild erscheint — das Kind <b>benennt es laut</b>. Trainiert aktives, expressives Sprechen.</p>
+          <div class="stage">Stufe 2 · Sprechen</div>
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="top" style="background:var(--green)"><div class="ge">🔤</div><div class="gn">Welcher Laut?</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--green)">Lesen</span>
+          <p class="goal">Ein Laut wird gesprochen — das Kind tippt den <b>Buchstaben</b>. Verbindet Hören und Lesen.</p>
+          <div class="stage">Stufe 1 · Tippen</div>
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="top" style="background:var(--blue)"><div class="ge">🔢</div><div class="gn">Zähl mit</div></div>
+        <div class="body">
+          <span class="tag" style="background:var(--blue)">Rechnen</span>
+          <p class="goal">Objekte zählen von 1 bis 5 — mitgezählt wird laut vorgesprochen. Erste Zahlen spielerisch.</p>
+          <div class="stage">Stufe 1 · Tippen</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a class="cta" href="index.html">▶ Jetzt spielen</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW THE AI WORKS -->
+<section>
+  <div class="wrap">
+    <div class="aibox">
+      <p class="kicker" style="color:#c9b6ff">Das Neue</p>
+      <h2>Die App hört zu</h2>
+      <p style="max-width:620px;margin:8px auto 0;opacity:.9">Nicht nur Tippen. Die Interaktion wächst in Stufen — bis hin zu echten Handlungen im Alltag.</p>
+      <div class="steps">
+        <div class="step"><div class="n">1️⃣</div><h4>Tippen</h4><p>Das Kind tippt — sofortiges Ton-Feedback bei jeder Aktion.</p></div>
+        <div class="step"><div class="n">2️⃣</div><h4>Sprechen</h4><p>Das Kind spricht, die App erkennt und bewertet die Sprache.</p></div>
+        <div class="step soon"><div class="n">3️⃣</div><h4>Im echten Leben <span style="font-size:11px">· bald</span></h4><p>Das Kind bittet z.B. die Eltern um etwas — die AI hört zu und bewertet den Ausgang.</p></div>
+        <div class="step soon"><div class="n">4️⃣</div><h4>Multimodal <span style="font-size:11px">· später</span></h4><p>Gestik, Zeichnen, erste Schreibtests.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section style="background:linear-gradient(#F3F0FF,#FFFDF3)">
+  <div class="wrap">
+    <p class="kicker">Für Eltern</p>
+    <h2>Sicher & transparent</h2>
+    <div class="trust">
+      <div class="tcard"><div class="ic">🔒</div><h4>Audio bleibt lokal</h4><p>Sprache wird nur im Browser verarbeitet. Nichts wird gespeichert oder gesendet.</p></div>
+      <div class="tcard"><div class="ic">📊</div><h4>Fortschritt sichtbar</h4><p>Eltern-Bereich zeigt Genauigkeit pro Fähigkeit — als Übungs-Indikator, keine Diagnose.</p></div>
+      <div class="tcard"><div class="ic">🎯</div><h4>Ihr wählt den Fokus</h4><p>Beim Einrichten legt ihr fest, welche Fähigkeiten besonders trainiert werden.</p></div>
+      <div class="tcard"><div class="ic">⏱️</div><h4>Kurze Runden</h4><p>Sechs Runden, dann eine Belohnung. Gesund dosiert statt endlos.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h2 style="color:#fff">Bereit?</h2>
+  <p style="margin:10px 0 24px;color:#bbb">Kein Download nötig — direkt im Browser spielen.</p>
+  <a class="cta" href="index.html">▶ Spielen</a>
+  <p class="fine">Lernzeit ist eine spielerische Förder- und Übungs-App. Sie ersetzt keine logopädische oder ärztliche Diagnostik und Therapie. Die angezeigten Werte sind Übungs-Indikatoren, keine medizinische Diagnose.</p>
+</footer>
+
+</body>
+</html>
