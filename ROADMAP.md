@@ -85,3 +85,43 @@ Echtes Training für 4,5 J. mit Arbeitsgedächtnis-/Sprachförderung braucht **M
 3. **Fehler-Muster-Erkennung + AI-Sprachbewertung** (4+5) → aus Spielerei wird gezieltes Training.
 4. **Stufe-3 Real-World** (6) → der eigentliche Moat.
 5. Danach Eltern-Analytics, Story-World, native App.
+
+---
+
+## ✅ BUILD-STATUS (2026-09-24) — gebaut & live
+
+Alles Folgende ist implementiert, syntaxgeprüft, per Smoke-Test durchlaufen (alle 25 Spiele) und live auf
+**https://dribel792.github.io/kidsgame/web-mvp/spielen.html**.
+
+### Architektur (modular, `web-mvp/`)
+- `index.html` — Shell + Screens · `styles.css`
+- `js/content.js` — Wortbank (37 Wörter m. Emoji/Silben/Kategorie/Laute), Minimalpaare, Gegenteile, Geschichten, Real-World-Aufgaben
+- `js/core.js` — State, **Profile**, **adaptive Engine**, **Spaced Repetition**, **Fehler-Tracking**, TTS/STT, Session-Timer
+- `js/games.js` — alle Spiele
+- `js/ui.js` — Onboarding, Freispiel-Welt, Spiel-Engine, Eltern-Dashboard
+
+### Alle 25 Spiele gebaut
+🧠 Gedächtnis: Merk-die-Reihe · **Rückwärts-Merken** · Was-fehlt · Folge-der-Anweisung · Tablett-merken(Kim) · Gleich-oder-anders(1-back) · Rhythmus-klopfen · Geschichte→Fragen
+🔤 Laute/Lesen: Anlaut-Detektiv · Silben-klatschen · **Laute-verschmelzen** · Reime · Laut-wegnehmen
+👂 Hören: Hör-genau-hin · **Minimalpaare** · Wort-im-Gewusel(Figur-Grund)
+🗣️ Sprache: Sprich-nach · Was-ist-das · Kategorien · Gegenteile · Satz-bauen · Erzähl-das-Bild · Schnell-benennen · **Echte-Aufgabe (Stufe 3)**
+🔢 Rechnen: Zahlen&Mengen (Subitizing → Mehr/Weniger → Plus)
+
+### Features gebaut
+- ✅ **Adaptive-Difficulty-Engine** — Ability pro Fähigkeit (1–12), Staircase (Ziel ~75 %), steuert Länge/Optionen/Schritte jedes Spiels
+- ✅ **Freispielen/Unlock-Welt** — 25 Spiele nach Sternen gestaffelt (0→35), Freispiel-Jubel, Fortschrittsanzeige
+- ✅ **Spaced Repetition** — schwache Items kommen bevorzugt zurück
+- ✅ **Fehler-Muster-Erkennung** — Stolpersteine + Übungsschwerpunkt im Eltern-Dashboard
+- ✅ **Tiefes Eltern-Dashboard** — Level + Genauigkeit pro Fähigkeit, Verlauf
+- ✅ **Mehrere Kinder-Profile** — anlegen/wechseln
+- ✅ **Session-Limit** — Spielzeit einstellbar (5–60 Min), Pausen-Screen
+- ✅ **Stufe-3 Real-World-Prototyp** — echte Aufgabe + AI hört zu / Eltern-Bestätigung
+- ✅ Datenschutz-Hinweis, Barrierefreiheit-Basics (große Ziele, Audio überall)
+
+### ⏳ Braucht noch einen API-Key (dokumentiert, Architektur steht)
+- **Echte neuronale Stimme** (TTS-Clips) — aktuell Browser-Stimme (roboterhaft)
+- **Cloud-STT/Whisper** — Mikro auf iPad; aktuell nur Desktop-Chrome-Spracherkennung + Eltern-Fallback
+- **AI-Sprachbewertung / freie Textbewertung** — aktuell Stichwort-/Fuzzy-Match
+
+### ⏳ Größere separate Projekte (bewusst später)
+- Volle Anamnese-Fragebogen · Baseline-Screening-Assessment · Wochen-Report (PDF/E-Mail) · Logopäden-Modus · Story-World-Klammer · Native App (Expo→TestFlight)

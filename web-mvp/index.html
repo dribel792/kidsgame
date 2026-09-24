@@ -4,80 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Lernzeit 🌟</title>
-<style>
-  :root {
-    --pink:#FF6B9D; --blue:#00B4D8; --purple:#845EC2; --green:#52B788;
-    --orange:#F4A261; --yellow:#FFD166; --bg:#FFFDE7; --ink:#333;
-  }
-  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { margin:0; height:100%; }
-  body {
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    background:var(--bg); color:var(--ink); overflow:hidden;
-    user-select:none; -webkit-user-select:none; touch-action:manipulation;
-  }
-  #app { height:100vh; display:flex; flex-direction:column; }
-  .screen { flex:1; display:none; flex-direction:column; padding:20px; overflow-y:auto; }
-  .screen.active { display:flex; }
-  h1 { font-size:clamp(28px,6vw,48px); font-weight:900; text-align:center; margin:14px 0 4px; }
-  .subtitle { text-align:center; color:#888; font-size:clamp(15px,3vw,20px); margin-bottom:14px; }
-
-  /* Buttons */
-  .btn {
-    border:none; border-radius:22px; color:#fff; font-weight:800;
-    font-size:clamp(18px,4vw,24px); padding:18px 24px; cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.15); transition:transform .1s;
-  }
-  .btn:active { transform:scale(.95); }
-  .btn.big { font-size:clamp(24px,6vw,34px); padding:26px; }
-  .btn.pink{background:var(--pink)} .btn.blue{background:var(--blue)}
-  .btn.purple{background:var(--purple)} .btn.green{background:var(--green)}
-  .btn.orange{background:var(--orange)} .btn.gray{background:#9aa0a6}
-
-  /* Home game grid */
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; padding:4px; }
-  .card {
-    border-radius:24px; padding:22px 10px; text-align:center; cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.13); color:#fff; transition:transform .1s;
-  }
-  .card:active { transform:scale(.95); }
-  .card .emoji { font-size:clamp(40px,9vw,56px); }
-  .card .name { font-size:clamp(16px,3.5vw,20px); font-weight:800; margin-top:6px; }
-  .card .desc { font-size:12px; opacity:.9; margin-top:2px; }
-  .stage-tag { display:inline-block; background:rgba(255,255,255,.28); border-radius:10px; font-size:11px; padding:2px 8px; margin-top:8px; }
-
-  /* Game area */
-  .gamewrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:18px; }
-  .prompt { font-size:clamp(20px,4.5vw,30px); font-weight:800; }
-  .bigemoji { font-size:clamp(80px,22vw,150px); }
-  .options { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
-  .opt {
-    width:clamp(96px,26vw,150px); height:clamp(96px,26vw,150px); border-radius:26px;
-    background:#fff; box-shadow:0 4px 12px rgba(0,0,0,.12); font-size:clamp(44px,11vw,72px);
-    display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform .1s;
-  }
-  .opt:active { transform:scale(.92); }
-  .opt.lit { background:var(--yellow); transform:scale(1.08); box-shadow:0 0 0 6px rgba(255,209,102,.5); }
-  .opt.right { background:#B7E4C7; box-shadow:0 0 0 6px rgba(82,183,136,.6); }
-  .opt.wrong { animation:shake .4s; }
-  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-
-  .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-  .stars { font-size:22px; letter-spacing:2px; }
-  .mic-status { font-size:clamp(16px,3.5vw,22px); font-weight:700; color:#666; min-height:28px; }
-  .listening { color:var(--pink); }
-  .row { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  .center { text-align:center; }
-  .field { width:100%; max-width:420px; padding:14px 16px; font-size:20px; border:2px solid #ddd; border-radius:14px; margin:6px 0; }
-  label { font-weight:700; display:block; margin-top:10px; }
-  .toggle { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0; }
-  .chip { padding:12px 18px; border-radius:16px; background:#eee; font-weight:700; cursor:pointer; }
-  .chip.on { background:var(--green); color:#fff; }
-  .muted { color:#999; font-size:14px; }
-  .summary-row { display:flex; justify-content:space-between; padding:12px 6px; border-bottom:1px solid #eee; font-size:18px; }
-  .bar { height:14px; border-radius:8px; background:#eee; overflow:hidden; margin-top:4px; }
-  .bar > i { display:block; height:100%; background:var(--green); }
-</style>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <div id="app">
@@ -85,8 +12,8 @@
   <!-- ONBOARDING -->
   <section id="s-onboard" class="screen active">
     <h1>🌟 Lernzeit</h1>
-    <p class="subtitle">Kurz einrichten (nur beim ersten Mal)</p>
-    <div class="center" style="max-width:460px;margin:0 auto;width:100%;">
+    <p class="subtitle">Kurz einrichten</p>
+    <div style="max-width:460px;margin:0 auto;width:100%;text-align:center">
       <label>Wie heißt das Kind?</label>
       <input id="childName" class="field" placeholder="z.B. Mia" />
       <label>Was möchtest du besonders fördern?</label>
@@ -96,15 +23,15 @@
         <div class="chip" data-f="reading">🔤 Lesen</div>
         <div class="chip" data-f="math">🔢 Rechnen</div>
       </div>
-      <p class="muted">Ton & Mikrofon nötig. Audio wird nur lokal im Browser verarbeitet — nichts wird gespeichert oder gesendet.</p>
-      <button class="btn green big" style="width:100%;margin-top:10px" onclick="finishOnboard()">Los geht's! ▶</button>
+      <p class="muted">Ton & Mikrofon nötig. Audio wird nur lokal im Browser verarbeitet — nichts gespeichert oder gesendet.</p>
+      <button class="btn green big" style="width:100%;margin-top:10px" onclick="UI.finishOnboard()">Los geht's! ▶</button>
     </div>
   </section>
 
   <!-- HOME -->
   <section id="s-home" class="screen">
     <div class="topbar">
-      <button class="btn gray" style="padding:10px 16px;font-size:16px" onclick="openParent()">👨‍👩‍👧 Eltern</button>
+      <button class="btn gray" style="padding:9px 14px;font-size:15px" onclick="UI.openParent()">👨‍👩‍👧 Eltern</button>
       <div class="stars" id="homeStars"></div>
     </div>
     <h1 id="homeHi">Hallo!</h1>
@@ -117,427 +44,29 @@
   <!-- GAME -->
   <section id="s-game" class="screen">
     <div class="topbar">
-      <button class="btn gray" style="padding:10px 16px;font-size:16px" onclick="goHome()">← Zurück</button>
+      <button class="btn gray" style="padding:9px 14px;font-size:15px" onclick="UI.goHome()">← Zurück</button>
       <div class="stars" id="gameStars"></div>
     </div>
     <div class="gamewrap" id="gameArea"></div>
   </section>
 
-  <!-- PARENT DASHBOARD -->
+  <!-- PARENT -->
   <section id="s-parent" class="screen">
     <div class="topbar">
-      <button class="btn gray" style="padding:10px 16px;font-size:16px" onclick="goHome()">← Zurück</button>
-      <div></div>
+      <button class="btn gray" style="padding:9px 14px;font-size:15px" onclick="UI.goHome()">← Zurück</button>
+      <button class="btn orange" style="padding:9px 14px;font-size:15px" onclick="UI.resetAll()">Reset</button>
     </div>
-    <h1>Fortschritt</h1>
-    <div id="parentBody" style="max-width:520px;margin:0 auto;width:100%"></div>
-    <div class="center" style="margin-top:16px">
-      <button class="btn orange" onclick="resetAll()">Zurücksetzen</button>
-    </div>
+    <h1>Eltern-Bereich</h1>
+    <div id="parentBody" style="max-width:560px;margin:0 auto;width:100%"></div>
+    <div style="height:20px"></div>
   </section>
 
 </div>
 
-<script>
-/* ============================================================
-   Lernzeit — MVP (Interaktionsstufen 1 + 2)
-   Vanilla JS, single file. TTS + Spracherkennung (DE), lokal.
-   ============================================================ */
-
-// ---------- State / storage ----------
-const LS = 'lernzeit_v1';
-let state = loadState();
-function loadState(){
-  try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e){ return {}; }
-}
-function saveState(){ localStorage.setItem(LS, JSON.stringify(state)); }
-function log(skill, correct){
-  state.sessions = state.sessions || [];
-  state.sessions.push({ skill, correct, t: Date.now() });
-  if (correct) state.stars = (state.stars||0)+1;
-  if (state.sessions.length > 500) state.sessions = state.sessions.slice(-500);
-  saveState();
-}
-
-// ---------- TTS ----------
-let bestVoice=null, voicesReady=false;
-function pickVoice(vs){
-  const p=[v=>v.lang==='de-DE'&&/google/i.test(v.name),
-           v=>v.lang==='de-DE'&&/microsoft/i.test(v.name),
-           v=>v.lang==='de-DE'&&!v.localService,
-           v=>v.lang==='de-DE', v=>v.lang.startsWith('de')];
-  for(const t of p){ const m=vs.find(t); if(m) return m; }
-  return null;
-}
-function ensureVoices(){
-  if(voicesReady) return;
-  const vs = speechSynthesis.getVoices();
-  if(vs.length){ bestVoice=pickVoice(vs); voicesReady=true; }
-}
-if('speechSynthesis' in window){
-  speechSynthesis.onvoiceschanged = ()=>{ voicesReady=false; ensureVoices(); };
-}
-function speak(text, {rate=0.85, pitch=1.15, cb}={}){
-  if(!('speechSynthesis' in window)){ cb&&cb(); return; }
-  speechSynthesis.cancel(); ensureVoices();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='de-DE'; u.rate=rate; u.pitch=pitch;
-  if(bestVoice) u.voice=bestVoice;
-  if(cb) u.onend=cb;
-  speechSynthesis.speak(u);
-}
-
-// ---------- Speech recognition (Stufe 2) ----------
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-const micAvailable = !!SR;
-function listenOnce({onResult, onError, timeout=6000}){
-  if(!micAvailable){ onError && onError('no-mic'); return null; }
-  const rec = new SR();
-  rec.lang='de-DE'; rec.interimResults=false; rec.maxAlternatives=3;
-  let done=false, timer=null;
-  rec.onresult = e=>{
-    if(done) return; done=true; clearTimeout(timer);
-    const alts=[]; for(let i=0;i<e.results[0].length;i++) alts.push(e.results[0][i].transcript);
-    onResult(alts);
-  };
-  rec.onerror = e=>{ if(done) return; done=true; clearTimeout(timer); onError && onError(e.error); };
-  rec.onend = ()=>{ if(done) return; done=true; onError && onError('no-speech'); };
-  try { rec.start(); } catch(e){ onError && onError('start-fail'); return null; }
-  timer = setTimeout(()=>{ try{ rec.stop(); }catch(e){} }, timeout);
-  return rec;
-}
-function norm(s){ return (s||'').toLowerCase().replace(/[^a-zäöüß]/g,'').trim(); }
-function heard(alts, target){
-  const t=norm(target);
-  return alts.some(a=>{ const n=norm(a); return n.includes(t) || t.includes(n) || lev(n,t)<=1; });
-}
-function lev(a,b){ // small Levenshtein for fuzzy match
-  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
-  const d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
-  for(let j=0;j<=n;j++) d[0][j]=j;
-  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
-    d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
-  return d[m][n];
-}
-
-// ---------- Content ----------
-const ANIMALS = [
-  {e:'🐶',w:'Hund'},{e:'🐱',w:'Katze'},{e:'🐰',w:'Hase'},{e:'🐸',w:'Frosch'},
-  {e:'🐷',w:'Schwein'},{e:'🦆',w:'Ente'},{e:'🐮',w:'Kuh'},{e:'🐴',w:'Pferd'}
-];
-const THINGS = [
-  {e:'🍎',w:'Apfel'},{e:'🍌',w:'Banane'},{e:'⚽',w:'Ball'},{e:'🚗',w:'Auto'},
-  {e:'🌸',w:'Blume'},{e:'🏠',w:'Haus'},{e:'☀️',w:'Sonne'},{e:'🐟',w:'Fisch'},
-  {e:'🐻',w:'Bär'},{e:'🌙',w:'Mond'},{e:'🎈',w:'Ballon'},{e:'🍰',w:'Kuchen'}
-];
-const LAUTE = [
-  {l:'M',letter:'M',ex:'Maus'},{l:'A',letter:'A',ex:'Affe'},{l:'S',letter:'S',ex:'Sonne'},
-  {l:'O',letter:'O',ex:'Oma'},{l:'L',letter:'L',ex:'Lampe'},{l:'E',letter:'E',ex:'Esel'}
-];
-
-// ---------- Screen switching ----------
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function stars(){ return '⭐'.repeat(Math.min(state.stars||0,10)); }
-function refreshStars(){
-  document.getElementById('homeStars').textContent = stars();
-  document.getElementById('gameStars').textContent = stars();
-}
-
-// ---------- Onboarding ----------
-document.querySelectorAll('#focusChips .chip').forEach(c=>{
-  c.onclick=()=>c.classList.toggle('on');
-});
-function finishOnboard(){
-  const name=document.getElementById('childName').value.trim()||'Kind';
-  const focus=[...document.querySelectorAll('#focusChips .chip.on')].map(c=>c.dataset.f);
-  state.name=name; state.focus=focus.length?focus:['memory','speech']; state.stars=state.stars||0;
-  saveState(); goHome();
-}
-
-// ---------- Home ----------
-const GAMES = [
-  {id:'memory',  name:'Merk die Reihe', emoji:'🧠', color:'var(--purple)', desc:'Reihenfolge merken', stage:'Stufe 1 · Tippen', skill:'memory',  unlock:0},
-  {id:'listen',  name:'Hör genau hin',  emoji:'👂', color:'var(--blue)',   desc:'Hören & finden',     stage:'Stufe 1 · Tippen', skill:'speech',  unlock:0},
-  {id:'repeat',  name:'Sprich nach',    emoji:'🗣️', color:'var(--pink)',   desc:'Nachsprechen',       stage:'Stufe 2 · Sprechen', skill:'speech', unlock:3},
-  {id:'phonics', name:'Anlaut-Detektiv',emoji:'🕵️', color:'var(--green)',  desc:'Wie fängt es an?',   stage:'Stufe 1 · Hören', skill:'reading', unlock:6},
-  {id:'count',   name:'Zähl mit',       emoji:'🔢', color:'var(--blue)',   desc:'Zählen 1–5',         stage:'Stufe 1 · Tippen', skill:'math',   unlock:9},
-  {id:'name',    name:'Was ist das?',   emoji:'💬', color:'var(--orange)', desc:'Laut benennen',      stage:'Stufe 2 · Sprechen', skill:'speech', unlock:12},
-];
-function unlockedCount(){ const s=state.stars||0; return GAMES.filter(g=>s>=g.unlock).length; }
-function goHome(){
-  show('s-home');
-  document.getElementById('homeHi').textContent = 'Hallo, '+(state.name||'du')+'!';
-  refreshStars();
-  const s=state.stars||0;
-  const nowU=unlockedCount(), prevU=state.lastUnlockedCount||0;
-  const msg=document.getElementById('homeMsg');
-  if(nowU>prevU){
-    const g=GAMES[nowU-1];
-    msg.textContent='🎉 Neu freigespielt: '+g.name+'!';
-    setTimeout(()=>speak('Super! Du hast ein neues Spiel freigespielt: '+g.name+'!'),300);
-  } else {
-    const next=GAMES.find(g=>s<g.unlock);
-    msg.textContent = next ? ('Nächstes Spiel bei ⭐ '+next.unlock+' — noch '+(next.unlock-s)) : 'Alle Spiele frei! ⭐';
-    setTimeout(()=>speak('Hallo '+(state.name||'')+'! Was möchtest du spielen?'),200);
-  }
-  state.lastUnlockedCount=nowU; saveState();
-  const grid=document.getElementById('gameGrid'); grid.innerHTML='';
-  GAMES.forEach(g=>{
-    const unlocked = s>=g.unlock;
-    const d=document.createElement('div'); d.className='card';
-    if(unlocked){
-      d.style.background=g.color;
-      d.innerHTML=`<div class="emoji">${g.emoji}</div><div class="name">${g.name}</div>
-        <div class="desc">${g.desc}</div><div class="stage-tag">${g.stage}</div>`;
-      d.onclick=()=>{ speak(g.name); setTimeout(()=>startGame(g.id),450); };
-    } else {
-      d.style.background='#c9ccd1';
-      d.innerHTML=`<div class="emoji">🔒</div><div class="name">${g.name}</div>
-        <div class="desc">Noch ${g.unlock-s} ⭐ sammeln</div><div class="stage-tag">🔑 Freispielen bei ⭐ ${g.unlock}</div>`;
-      d.onclick=()=>{ speak('Sammle noch '+(g.unlock-s)+' Sterne, dann kannst du '+g.name+' spielen.'); };
-    }
-    grid.appendChild(d);
-  });
-}
-
-// ---------- Game engine ----------
-let G = {}; // per-game runtime
-function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
-function sample(arr,n){ return shuffle(arr).slice(0,n); }
-function area(){ return document.getElementById('gameArea'); }
-function celebrate(cb){
-  const em=['🎉','⭐','👏','🌟','🥳']; area().innerHTML=`<div class="bigemoji">${em[(Math.random()*em.length)|0]}</div><div class="prompt">Super gemacht!</div>`;
-  speak('Super gemacht!'); setTimeout(cb,1300);
-}
-function startGame(id){
-  show('s-game'); refreshStars();
-  G={id, round:0, correctInRow:0, total:0, level: (state.levels&&state.levels[id])||1};
-  const map={memory:gMemory, listen:gListen, repeat:gRepeat, name:gName, phonics:gPhonics, count:gCount};
-  map[id]();
-}
-function endRound(id, correct, next){
-  G.total++;
-  const g=GAMES.find(x=>x.id===id);
-  log(g.skill, correct);
-  if(correct){ G.correctInRow++; } else { G.correctInRow=0; }
-  // adaptive level
-  state.levels=state.levels||{};
-  if(G.correctInRow>=3){ state.levels[id]=(state.levels[id]||1)+1; G.level++; G.correctInRow=0; }
-  saveState(); refreshStars();
-  if(G.total>=6){ celebrate(goHome); } else { setTimeout(next, correct?900:1400); }
-}
-
-/* --- 1) Merk die Reihe (Arbeitsgedächtnis) --- */
-function gMemory(){
-  const len = Math.min(2 + Math.floor((G.level-1)/1), 5); // 2..5
-  const pool = sample(ANIMALS, Math.max(3, len));
-  const seq = sample(pool, len);
-  area().innerHTML = `<div class="prompt">Merk dir die Reihe! 👀</div>
-    <div class="options" id="memOpts"></div>
-    <div class="mic-status" id="memMsg">Schau gut hin…</div>`;
-  const box=document.getElementById('memOpts');
-  const nodes={};
-  pool.forEach(p=>{ const d=document.createElement('div'); d.className='opt'; d.textContent=p.e; box.appendChild(d); nodes[p.w]=d; });
-  // play sequence
-  let i=0;
-  speak('Merk dir die Reihe.');
-  function playStep(){
-    if(i>=seq.length){ setTimeout(startInput,500); return; }
-    const item=seq[i]; const node=nodes[item.w];
-    node.classList.add('lit'); speak(item.w);
-    setTimeout(()=>{ node.classList.remove('lit'); i++; setTimeout(playStep,350); }, 850);
-  }
-  setTimeout(playStep,700);
-  // input phase
-  function startInput(){
-    document.getElementById('memMsg').textContent='Jetzt du! Tippe die Reihe.';
-    speak('Jetzt du. Tippe die Reihe.');
-    let pos=0, wrong=false;
-    Object.entries(nodes).forEach(([w,node])=>{
-      node.onclick=()=>{
-        if(wrong) return;
-        if(w===seq[pos].w){ node.classList.add('right'); speak(w); pos++;
-          if(pos>=seq.length){ setTimeout(()=>endRound('memory',true,gMemory),400); }
-        } else {
-          wrong=true; node.classList.add('wrong'); speak('Fast! Wir probieren es nochmal.');
-          document.getElementById('memMsg').textContent='Fast! Nochmal 🙂';
-          setTimeout(()=>endRound('memory',false,gMemory),600);
-        }
-      };
-    });
-  }
-}
-
-/* --- 2) Hör genau hin (auditive Verarbeitung) --- */
-function gListen(){
-  const n = Math.min(2 + Math.floor((G.level-1)/2), 4); // 2..4 options
-  const opts = sample(THINGS, n);
-  const target = opts[(Math.random()*opts.length)|0];
-  area().innerHTML = `<div class="prompt">👂 Wo ist… hör zu!</div>
-    <button class="btn blue" onclick="speak('${target.w}')">🔊 Nochmal hören</button>
-    <div class="options" id="lsOpts"></div>
-    <div class="mic-status">Tippe das richtige Bild</div>`;
-  const box=document.getElementById('lsOpts');
-  opts.forEach(o=>{
-    const d=document.createElement('div'); d.className='opt'; d.textContent=o.e;
-    d.onclick=()=>{
-      if(o.w===target.w){ d.classList.add('right'); speak('Richtig! '+target.w); endRound('listen',true,gListen); }
-      else { d.classList.add('wrong'); speak('Das ist '+o.w+'. Wir suchen '+target.w+'.'); endRound('listen',false,gListen); }
-    };
-    box.appendChild(d);
-  });
-  setTimeout(()=>speak('Wo ist der '+target.w+'? Hör genau hin.'),400);
-}
-
-/* --- 3) Sprich nach (Stufe 2, Mikrofon) --- */
-function gRepeat(){
-  const item = sample([...ANIMALS,...THINGS],1)[0];
-  micGame({
-    promptEmoji: item.e,
-    promptText: 'Sprich nach: „'+item.w+'"',
-    say: item.w,
-    target: item.w,
-    skill:'repeat',
-    next: gRepeat
-  });
-}
-
-/* --- 4) Was ist das? (Stufe 2, benennen) --- */
-function gName(){
-  const item = sample([...ANIMALS,...THINGS],1)[0];
-  micGame({
-    promptEmoji: item.e,
-    promptText: 'Was ist das? Sag es laut!',
-    say: 'Was ist das?',
-    target: item.w,
-    skill:'name',
-    next: gName
-  });
-}
-
-function micGame({promptEmoji,promptText,say,target,skill,next}){
-  area().innerHTML=`<div class="bigemoji">${promptEmoji}</div>
-    <div class="prompt">${promptText}</div>
-    <button class="btn pink big" id="micBtn">🎤 Sprechen</button>
-    <div class="mic-status" id="micMsg"></div>
-    <div class="row" id="micFallback" style="display:none">
-      <button class="btn green" id="fbYes">✅ Geschafft</button>
-      <button class="btn orange" id="fbNo">🔁 Nochmal</button>
-    </div>`;
-  const msg=document.getElementById('micMsg');
-  setTimeout(()=>speak(say),400);
-  function showFallback(txt){
-    msg.textContent=txt; msg.classList.remove('listening');
-    document.getElementById('micFallback').style.display='flex';
-    document.getElementById('fbYes').onclick=()=>{ speak('Toll gemacht!'); endRound(skill,true,next); };
-    document.getElementById('fbNo').onclick=()=>{ startGameSame(); };
-  }
-  function startGameSame(){ micGame({promptEmoji,promptText,say,target,skill,next}); }
-  document.getElementById('micBtn').onclick=()=>{
-    if(!micAvailable){ showFallback('(Kein Mikrofon hier — Eltern tippen)'); return; }
-    msg.textContent='Ich höre zu… 👂'; msg.classList.add('listening');
-    listenOnce({
-      timeout:6000,
-      onResult:alts=>{
-        msg.classList.remove('listening');
-        if(heard(alts,target)){ msg.textContent='Richtig gehört: '+target+' ✅'; speak('Super! '+target); endRound(skill,true,next); }
-        else { msg.textContent='Ich hab „'+(alts[0]||'…')+'" gehört. Nochmal? 🙂';
-               speak('Fast! Sag noch einmal '+target); document.getElementById('micFallback').style.display='flex';
-               document.getElementById('fbYes').onclick=()=>{ endRound(skill,true,next); };
-               document.getElementById('fbNo').onclick=startGameSame; }
-      },
-      onError:err=>{
-        msg.classList.remove('listening');
-        if(err==='not-allowed'||err==='service-not-allowed'){ showFallback('Mikro-Erlaubnis fehlt. Eltern tippen 👇'); }
-        else { msg.textContent='Nicht verstanden — nochmal? 🎤'; }
-      }
-    });
-  };
-}
-
-/* --- 5) Anlaut-Detektiv (phonologische Bewusstheit: Anlaut/Auslaut) --- */
-function gPhonics(){
-  const useAuslaut = G.level>=3 && Math.random()<0.35;
-  const item = sample([...ANIMALS,...THINGS],1)[0];
-  const correct = (useAuslaut ? item.w.slice(-1) : item.w[0]).toUpperCase();
-  const pool = 'ABDEFGHKLMNOPRSTUWZ'.split('').filter(x=>x!==correct);
-  const nOpt = Math.min(2 + Math.floor((G.level-1)/2), 4);
-  const opts = shuffle([correct, ...sample(pool, nOpt-1)]);
-  const frage = useAuslaut ? `Womit hört „${item.w}" auf?` : `Womit fängt „${item.w}" an?`;
-  area().innerHTML=`<div class="bigemoji">${item.e}</div>
-    <div class="prompt">${frage}</div>
-    <button class="btn green" onclick="speak('${item.w}',{rate:0.65})">🔊 Nochmal hören</button>
-    <div class="options" id="phOpts"></div>`;
-  const box=document.getElementById('phOpts');
-  opts.forEach(L=>{
-    const d=document.createElement('div'); d.className='opt'; d.style.fontWeight='900'; d.textContent=L;
-    d.onclick=()=>{
-      if(L===correct){ d.classList.add('right');
-        speak('Richtig! '+item.w+(useAuslaut?' hört mit '+correct+' auf.':' fängt mit '+correct+' an.'));
-        endRound('phonics',true,gPhonics); }
-      else { d.classList.add('wrong'); speak('Hör nochmal genau hin. '+item.w,{rate:0.65}); endRound('phonics',false,gPhonics); }
-    };
-    box.appendChild(d);
-  });
-  setTimeout(()=>speak('Hör genau hin. '+item.w+'. '+frage,{rate:0.72}),400);
-}
-
-/* --- 6) Zähl mit (Rechnen) --- */
-function gCount(){
-  const max = Math.min(3 + Math.floor((G.level-1)/2), 5);
-  const count = 1 + ((Math.random()*max)|0);
-  const item = sample(THINGS,1)[0];
-  area().innerHTML=`<div class="prompt">Wie viele? Zähl mit! 🔢</div>
-    <div style="font-size:clamp(40px,10vw,64px)">${item.e.repeat(count)}</div>
-    <div class="options" id="cntOpts"></div>`;
-  const box=document.getElementById('cntOpts');
-  const nums = shuffle(Array.from({length:max},(_,i)=>i+1));
-  nums.forEach(num=>{
-    const d=document.createElement('div'); d.className='opt'; d.style.fontWeight='900'; d.style.fontSize='clamp(40px,10vw,64px)'; d.textContent=num;
-    d.onclick=()=>{
-      if(num===count){ d.classList.add('right'); speak('Richtig! '+count); endRound('count',true,gCount); }
-      else { d.classList.add('wrong'); speak('Zähl nochmal mit mir.'); endRound('count',false,gCount); }
-    };
-    box.appendChild(d);
-  });
-  // count aloud
-  let k=0; setTimeout(function tick(){ if(k<count){ k++; speak(String(k),{rate:0.9}); setTimeout(tick,700);} },500);
-}
-
-// ---------- Parent dashboard ----------
-const SKILL_LABEL={memory:'🧠 Gedächtnis',speech:'🗣️ Sprache',reading:'🔤 Lesen',math:'🔢 Rechnen'};
-function openParent(){
-  show('s-parent');
-  const s=state.sessions||[];
-  const by={};
-  s.forEach(r=>{ by[r.skill]=by[r.skill]||{c:0,n:0}; by[r.skill].n++; if(r.correct) by[r.skill].c++; });
-  const body=document.getElementById('parentBody');
-  let html=`<div class="summary-row"><b>${state.name||'Kind'}</b><span>${stars()} (${state.stars||0} Sterne)</span></div>`;
-  html+=`<div class="summary-row"><span>Runden gesamt</span><b>${s.length}</b></div>`;
-  Object.keys(SKILL_LABEL).forEach(k=>{
-    const d=by[k]; if(!d) return;
-    const pct=Math.round(100*d.c/d.n);
-    html+=`<div style="padding:10px 6px;border-bottom:1px solid #eee">
-      <div style="display:flex;justify-content:space-between"><span>${SKILL_LABEL[k]}</span><b>${pct}% · ${d.n} Runden</b></div>
-      <div class="bar"><i style="width:${pct}%"></i></div></div>`;
-  });
-  if(!s.length) html+=`<p class="muted">Noch keine Runden gespielt.</p>`;
-  html+=`<p class="muted" style="margin-top:16px">Fokus: ${(state.focus||[]).map(f=>SKILL_LABEL[f]||f).join(', ')||'—'}.
-    Hinweis: Diese Werte sind Übungs-Indikatoren, keine Diagnose.</p>`;
-  body.innerHTML=html;
-}
-function resetAll(){
-  if(confirm('Wirklich alle Daten zurücksetzen?')){ localStorage.removeItem(LS); state=loadState(); show('s-onboard'); }
-}
-
-// ---------- Boot ----------
-(function boot(){
-  ensureVoices();
-  if(state.name){ goHome(); } else { show('s-onboard'); }
-})();
-</script>
+<script src="js/content.js"></script>
+<script src="js/core.js"></script>
+<script src="js/games.js"></script>
+<script src="js/ui.js"></script>
+<script>UI.boot();</script>
 </body>
 </html>

@@ -1,27 +1,38 @@
-# Web-MVP — Lernzeit (Interaktionsstufen 1 + 2)
+# Web-App — Lernzeit (25 Spiele, adaptiv)
 
-Sofort lauffähige Version. **Kein Build, keine Installation.**
+Sofort lauffähig. **Kein Build, keine Installation.** Modulare Vanilla-JS-App.
 
-## Öffnen
-- **Am Laptop:** `index.html` in **Chrome** doppelklicken (oder öffnen).
-- **Am iPad/Handy:** Datei auf ein kleines Web-Hosting legen ODER lokal servern:
-  ```bash
-  cd kidsgame/web-mvp
-  python3 -m http.server 8080
-  ```
-  Dann am iPad im **Chrome/Safari** `http://<laptop-ip>:8080` öffnen (gleiches WLAN).
+## Live
+- **Landing/Spielen:** https://dribel792.github.io/kidsgame/web-mvp/spielen.html
+- **Direkt App:** https://dribel792.github.io/kidsgame/web-mvp/index.html
 
-> **Mikrofon (Sprich nach / Was ist das?)** braucht **Chrome** und eine Erlaubnis-Freigabe.
-> Über `http://` funktioniert das Mikro nur auf `localhost`; für iPad-Zugriff später via `https://` hosten.
-> Ohne Mikro laufen die Sprech-Spiele mit Eltern-Tipp-Fallback (✅ Geschafft / 🔁 Nochmal) weiter.
+## Lokal öffnen
+- **Laptop:** `index.html` in **Chrome** öffnen (Mikro nur über HTTPS oder localhost).
+- **Server:** `python3 -m http.server 8080` → `http://localhost:8080/spielen.html`
+
+> **Mikrofon** (Sprech-Spiele) braucht Chrome + HTTPS/localhost. iPad-Safari kann die Browser-Spracherkennung nicht → dort greift der Eltern-Tipp-Fallback (echtes iPad-Mikro kommt mit Cloud-STT, s. ROADMAP).
+
+## Struktur
+```
+web-mvp/
+├── index.html        Shell + Screens
+├── styles.css
+└── js/
+    ├── content.js    Wortbank, Minimalpaare, Gegenteile, Geschichten, Real-World-Aufgaben
+    ├── core.js       State, Profile, adaptive Engine, Spaced Repetition, Fehler-Tracking, TTS/STT, Session-Timer
+    ├── games.js      alle 25 Spiele
+    └── ui.js         Onboarding, Freispiel-Welt, Spiel-Engine, Eltern-Dashboard
+```
 
 ## Was drin ist
-- **Eltern-Onboarding** (Name + Fokus-Fähigkeiten) — einmalig, in `localStorage`.
-- **Stufe 1 (Tippen):** Merk die Reihe (Arbeitsgedächtnis), Hör genau hin (auditive Verarbeitung), Welcher Laut? (Lesen), Zähl mit (Rechnen).
-- **Stufe 2 (Sprechen):** Sprich nach, Was ist das? — Spracherkennung (DE), lokal, Fuzzy-Match.
-- **Adaptive Level** (3 richtig in Folge → schwerer), **Sterne**, **Eltern-Dashboard** (Genauigkeit pro Fähigkeit).
+- **25 Spiele** über 5 Fähigkeiten (Gedächtnis, Laute/Lesen, Hören, Sprache, Rechnen) — von einfach bis fordernd.
+- **Adaptive Schwierigkeit** pro Fähigkeit (wächst automatisch mit, Ziel ~75 % Erfolg).
+- **Freispielen**: Spiele schalten nach Sternen frei (Unlock-Welt).
+- **Spaced Repetition** + **Fehler-Muster-Erkennung**.
+- **Eltern-Dashboard**: Level & Genauigkeit pro Fähigkeit, Stolpersteine, Übungsschwerpunkt.
+- **Mehrere Kinder-Profile**, **Session-Limit**, **Stufe-3-Real-World-Aufgaben**.
 
 ## Datenschutz
-Audio wird nur im Browser verarbeitet (Web Speech API). **Nichts wird gespeichert oder gesendet.** Fortschritt liegt lokal im `localStorage`.
+Audio nur lokal im Browser. Nichts gespeichert/gesendet. Fortschritt im `localStorage`.
 
-Konzept & Roadmap: siehe `../CONCEPT.md`.
+Konzept: `../CONCEPT.md` · Roadmap & Build-Status: `../ROADMAP.md`.
